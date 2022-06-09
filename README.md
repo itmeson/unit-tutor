@@ -22,8 +22,8 @@ Put a row of factors into the picket, then calculate to get the result.
 
 
 Bugs to fix:
- * Parsing to and from latex sometimes unpredictable (loses slashes, adds slashes)
- * Setting and clearing focus on edit is unreliable
+ * Parsing to and from latex sometimes unpredictable (loses slashes, adds slashes, spaces mess it up, \cdot messes it up)
+ * ~~Setting and clearing focus on edit is unreliable~~
  * Muuri sort settings cleaned up so layout works correctly
  * Why do the tiles sit on top of the header? Why can't I get them to float below the header?
  * Make an SVG equals button for the picket
@@ -39,6 +39,7 @@ Features to add:
  * Use Desmos, use in Desmos
  * Ability to add new picket rows
  * Ability to duplicate a card
+ * Mobile friendly editing
 
 Desirable refactoring?
  * Learn how packaging is supposed to work so you don't have to distribute decimal, nerdamer, and mathquill

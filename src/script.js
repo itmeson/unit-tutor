@@ -1,7 +1,10 @@
 var MQ = MathQuill.getInterface(2);
+MQ.config({
+  // this is to override the default of adding all the trig functions since I can't set to none
+  autoOperatorNames: "sin", 
+});
 
 const calculator = document.querySelector(".calculator");
-nerdamer.set('PARSE2NUMBER', true);
 Decimal.set({precision:5});
 
 
@@ -10,9 +13,16 @@ var gridA = new Muuri('.conversions', {
     dragContainer: document.body,
     dragSort: getAllGrids,
     items: '.item',
-    dragHandle: '.item-content'
+    dragHandle: '.item-content',
+
     }
 );
+
+/*unfocus mathquill item at end of drag of muuri item*/
+gridA.on('dragEnd', function (item, event) {
+  /*select .answer element of item*/
+  MQ(item._element.querySelector(".answer")).blur();
+})
 
 var gridB = new Muuri('.quantities', {
     dragEnabled: true,
@@ -22,13 +32,23 @@ var gridB = new Muuri('.quantities', {
     dragHandle: '.item-content'
 });
 
+gridB.on('dragEnd', function (item, event) {
+  /*select .answer element of item*/
+  MQ(item._element.querySelector(".answer")).blur();
+})
+
 var gridC = new Muuri('.picket', {
     dragEnabled: true,
     dragContainer: document.body,
     dragSort: getAllGrids,
     items: '.item',
-    dragHandle: '.item-content'
+    dragHandle: '.item-content',
 });
+
+gridC.on('dragEnd', function (item, event) {
+  /*select .answer element of item*/
+  MQ(item._element.querySelector(".answer")).blur();
+})
 
 var allGrids = [gridA, gridB, gridC];
 
@@ -90,6 +110,7 @@ function addAQuantity(quantity = "1") {
         enter: function () {
           var entered = answerMathField.latex();
           console.log(entered);
+         // answerMathField.blur();
         }
       }
     });
@@ -144,7 +165,7 @@ function addAResult(quantity = "1") {
   newQuant.classList.add("item");
   document.querySelector(".picket").appendChild(newQuant);
   let newItemContent = document.createElement("div");
-  newItemContent.classList.add("item-content");
+  newItemContent.classList.add("item-content", "fixedresult");
 
   let resultsCount = document.querySelectorAll(".result") ?? "";
   resultsCount = resultsCount.length;
@@ -154,7 +175,8 @@ function addAResult(quantity = "1") {
 
   const itemActions = document.importNode(document.querySelector(".item-actions").content, true);
   newQuant.appendChild(itemActions);
-  newQuant.querySelector(".board-item-action.edit").addEventListener("click", editQuantity);
+  newQuant.querySelector(".board-item-action.edit").remove();
+  //newQuant.querySelector(".board-item-action.edit").addEventListener("click", editQuantity);
   newQuant.querySelector(".board-item-action.delete").addEventListener("click", deleteQuantity);
   newQuant.addEventListener("click", flipQuantity);
 
@@ -215,7 +237,6 @@ function deleteQuantity(e) {
 
 function flipQuantity(e) {
   if (e.shiftKey) {
-    nerdamer.set('PARSE2NUMBER', true);
     const itemElem = e.target.closest(".item");
     let qty = nerdamer.convertFromLaTeX(MQ(itemElem.querySelector(".answer")).latex());
     console.log("1:", qty.toString());
@@ -234,15 +255,16 @@ function flipQuantity(e) {
 }
 
 /*find the product of each of the quantities in the picket*/
-function computeResult(e) {
+function computeResult() {
   let picket = document.querySelectorAll(".picket .item-title");
   let result = '1'
   picket.forEach( (item) => {
   console.log(MQ(item.querySelector(".answer")).latex());
+  //console.log(nerdamer.convertFromLaTeX(MQ(item.querySelector(".answer")).latex()))
     result += `*(${nerdamer.convertFromLaTeX(MQ(item.querySelector(".answer")).latex())})`;
   })
   console.log(result);
-  let exp = nerdamer.simplify(result).toTeX('decimal');;
+  let exp = nerdamer.simplify(result.replace(/ /, "")).toTeX('decimal');;
   addAResult(exp);
 
 }

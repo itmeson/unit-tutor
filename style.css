@@ -1,3 +1,12 @@
+:root {
+  --yellow: #ffe884;
+  --blue: #41c8e0;
+  --pink: #ff69ea;
+  --textcolor: black;
+  --bordercolor: black;
+  --uneditablecolor: #bdbdbd;
+}
+
 .calculator {
     position: relative;
     display: grid;
@@ -14,7 +23,7 @@
     display: flex;
     min-height: 250px;
     flex-direction: column;
-    border: 0.2rem solid #41c8e0;
+    border: 0.2rem solid var(--blue);
     border-radius: 1rem;
 
 
@@ -25,7 +34,7 @@
     display: flex;
     min-height: 250px;
     flex-direction: column;
-    border: 0.2rem solid #41c8e0;
+    border: 0.2rem solid var(--blue);
     border-radius: 1rem;
 }
 .picket {
@@ -34,7 +43,7 @@
     display: flex;
     flex-direction: row;
     min-height: 250px;
-    border: 0.2rem solid #41c8e0;
+    border: 0.2rem solid var(--blue);
     border-radius: 1rem;
     justify-items: center;
 
@@ -55,8 +64,8 @@
     font-weight: 200;
     font-style: italic;
     text-transform: lowercase;
-    background: #41c8e0;
-    color: #000;
+    background: var(--blue);
+    color: var(--textcolor);
     border-radius: 0.5rem;
     padding-bottom:20px;
 }
@@ -75,6 +84,11 @@
   .item.muuri-item-dragging {
     z-index: 3;
   }
+
+  .item.muuri-item-dragging .item-content {
+    background: var(--yellow);  }
+
+
   .item.muuri-item-releasing {
     z-index: 2;
   }
@@ -88,9 +102,9 @@
     padding-top: 1rem;
     padding-bottom: 1rem;;
     background: #fff;
-    border: 0.5rem solid #ffe884;
-    color: #3e3e3e;
-    border-radius: 1rem;
+    border: 0.3rem solid var(--bordercolor);
+    color: var(--textcolor);
+    /*border-radius: 1rem;*/
     font-size: 1.8rem;
     font-weight: 500;
   }
@@ -120,7 +134,7 @@
     user-select: none;
     transform: rotateZ(0deg);
     transition: transform 0.2s ease-in-out;
-    background: #41c8e0;
+    background: var(--blue);
   }
 
 
@@ -132,7 +146,7 @@
     font-size: 1.8rem;
     line-height: 1.5;
     word-break: break-word;
-    caret-color: #ff69ea;
+    caret-color: var(--pink);
     outline: none;
     outline-offset: 0.5rem;
     min-height: calc(1.8rem * 1.5);
@@ -153,7 +167,7 @@
   .board-item-action.edit {
     top: -30%;
     left: 80%;
-    color: #ff69ea;
+    color: var(--pink);
   }
 
   .item:hover .board-item-action,
@@ -172,7 +186,7 @@
   .board-item-action.delete {
     top: 50%;
     left: 80%;
-    color: #ff69ea;
+    color: var(--pink);
   }
 
   .board-item-action-icon {
@@ -181,12 +195,25 @@
   }
 
   .item.editing .item-content {
-    border-color: black;
+    border-color: var(--bordercolor);
     border-style: dashed;
-    border-width: .4rem;
+    border-width: .2rem;
   }
 
  .answer {
-   color: black;
+   color: var(--textcolor);
    font-weight:bold;
  }
+
+ .mq-math-mode {
+   margin-left: 10px;
+ }
+
+ .mq-editable-field {
+   border: none !important;
+ }
+
+.fixedresult { /*makes computed results uneditable*/
+  background-color: var(--uneditablecolor);
+  border: 0.3rem solid var(--bordercolor);
+}
