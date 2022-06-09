@@ -14,28 +14,47 @@ var gridA = new Muuri('.conversions', {
     dragSort: getAllGrids,
     items: '.item',
     dragHandle: '.item-content',
-
+    rounding: true,
+    fillGaps: true,
+    layoutOnInit: true,
+    alignRight: true,
     }
 );
 
 /*unfocus mathquill item at end of drag of muuri item*/
 gridA.on('dragEnd', function (item, event) {
   /*select .answer element of item*/
-  MQ(item._element.querySelector(".answer")).blur();
-})
+  let mathField = MQ(item._element.querySelector(".answer"));
+  if (mathField instanceof MQ.EditableField) {
+    MQ(item._element.querySelector(".answer")).blur();
+  }
+});
+
+gridA.on('layoutAbort', function(items) {
+  console.log("layoutAbort");
+  console.log(items);
+});
+
 
 var gridB = new Muuri('.quantities', {
     dragEnabled: true,
     dragContainer: document.body,
     dragSort: getAllGrids,
     items: '.item',
-    dragHandle: '.item-content'
+    dragHandle: '.item-content',
+    rounding: true,
+    fillGaps: true,
+    layoutOnInit: true,
+    alignRight: true,
 });
 
 gridB.on('dragEnd', function (item, event) {
   /*select .answer element of item*/
-  MQ(item._element.querySelector(".answer")).blur();
-})
+  let mathField = MQ(item._element.querySelector(".answer"));
+  if (mathField instanceof MQ.EditableField) {
+    MQ(item._element.querySelector(".answer")).blur();
+  }
+});
 
 var gridC = new Muuri('.picket', {
     dragEnabled: true,
@@ -43,12 +62,19 @@ var gridC = new Muuri('.picket', {
     dragSort: getAllGrids,
     items: '.item',
     dragHandle: '.item-content',
+    rounding: true,
+    fillGaps: true,
+    layoutOnInit: true,
+    alignRight: true,
 });
 
 gridC.on('dragEnd', function (item, event) {
   /*select .answer element of item*/
-  MQ(item._element.querySelector(".answer")).blur();
-})
+  let mathField = MQ(item._element.querySelector(".answer"));
+  if (mathField instanceof MQ.EditableField) {
+    MQ(item._element.querySelector(".answer")).blur();
+  }
+});
 
 var allGrids = [gridA, gridB, gridC];
 
@@ -64,12 +90,7 @@ addQuantities.addEventListener("click", addAQuantity);
 addConversions.addEventListener("click", addAConversion);
 compute.addEventListener("click", computeResult);
 
-addAConversion("100 \\frac{cm}{m}");
-addAConversion("2.54 \\frac{cm}{in}");
-addAConversion("12 \\frac{in}{ft}");
-addAConversion("5280 \\frac{ft}{mi}");
-addAConversion("3600 \\frac{s}{hr}");
-addAQuantity("30 \\frac{m}{s}");
+
 
 function addAQuantity(quantity = "1") {
   if (quantity.target) {quantity = 1;}
@@ -80,13 +101,12 @@ function addAQuantity(quantity = "1") {
     document.querySelector(".quantities").appendChild(newQuant);
     let newItemContent = document.createElement("div");
     newItemContent.classList.add("item-content");
+
     let quantCount = document.querySelectorAll(".quant") ?? "";
     quantCount = quantCount.length
     newItemContent.innerHTML = `<div class="item-title"><span class="answer quant" id="quant${quantCount}">${quantity}</span></div>`;
 
-
     newQuant.appendChild(newItemContent);
-
 
     const itemActions = document.importNode(document.querySelector(".item-actions").content, true);
     newQuant.appendChild(itemActions);
@@ -94,9 +114,8 @@ function addAQuantity(quantity = "1") {
     newQuant.querySelector(".board-item-action.delete").addEventListener("click", deleteQuantity);
     newQuant.addEventListener("click", flipQuantity);
     
-
-    gridB.add([newQuant]);
-
+    gridB.add([newQuant], {layout: true});
+    window.dispatchEvent(new Event('resize')); // because layout wasn't firing on add
 
     let answerSpan = document.getElementById(`quant${quantCount}`);
     console.log(answerSpan)
@@ -110,7 +129,7 @@ function addAQuantity(quantity = "1") {
         enter: function () {
           var entered = answerMathField.latex();
           console.log(entered);
-         // answerMathField.blur();
+          answerMathField.blur();
         }
       }
     });
@@ -137,7 +156,8 @@ function addAConversion(quantity = "1") {
   newQuant.querySelector(".board-item-action.delete").addEventListener("click", deleteQuantity);
   newQuant.addEventListener("click", flipQuantity);
 
-  gridA.add([newQuant]);
+  gridA.add([newQuant], {layout: "instant"});
+  window.dispatchEvent(new Event('resize')); // because layout wasn't firing on add
 
   let answerSpan = document.getElementById(`conv${convCount}`);
   console.log(answerSpan)
@@ -176,11 +196,11 @@ function addAResult(quantity = "1") {
   const itemActions = document.importNode(document.querySelector(".item-actions").content, true);
   newQuant.appendChild(itemActions);
   newQuant.querySelector(".board-item-action.edit").remove();
-  //newQuant.querySelector(".board-item-action.edit").addEventListener("click", editQuantity);
   newQuant.querySelector(".board-item-action.delete").addEventListener("click", deleteQuantity);
   newQuant.addEventListener("click", flipQuantity);
 
-  gridC.add([newQuant]);
+  gridC.add([newQuant], {layout: "instant"});
+  window.dispatchEvent(new Event('resize')); // because layout wasn't firing on add
 
   let answerSpan = document.getElementById(`result${resultsCount}`);
   MQ.StaticMath(answerSpan);
