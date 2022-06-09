@@ -2,6 +2,8 @@ A web app calculator to show unit conversion "picket-fence" calculations.
 
 Depends on MathQuill, jQuery, Muuri, web-animations, nerdamer, and decimal.js.
 
+Demo page hosted at https://itmeson.github.io/unit-tutor/
+
 On loading a page, quantities and conversions can be preset on the page using commands like this:
 
 ```
