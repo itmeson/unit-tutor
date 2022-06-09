@@ -27,7 +27,7 @@ Bugs to fix:
  * Parsing to and from latex sometimes unpredictable (loses slashes, adds slashes, spaces mess it up, \cdot messes it up)
  * ~~Setting and clearing focus on edit is unreliable~~
  * ~~Muuri sort settings cleaned up so layout works correctly~~
- * Why do the tiles sit on top of the header? Why can't I get them to float below the header?
+ * ~~Why do the tiles sit on top of the header? Why can't I get them to float below the header?~~
  * Make an SVG equals button for the picket
  * Prevent drag from putting focus on the mathquill item
 

@@ -10,10 +10,12 @@
 .calculator {
     position: relative;
     display: grid;
-    grid-template-rows: 1fr 150px;
+    grid-template-rows: 6rem 1fr 6rem 1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
+        "head1 head2"
         "converts quantities"
+        "head3 head3"
         "picket picket";
 }
 
@@ -25,8 +27,6 @@
     flex-direction: column;
     border: 0.2rem solid var(--blue);
     border-radius: 1rem;
-
-
 }
 .quantities {
     position: relative;
@@ -46,7 +46,6 @@
     border: 0.2rem solid var(--blue);
     border-radius: 1rem;
     justify-items: center;
-
 }
 
 .header {
@@ -69,8 +68,9 @@
     border-radius: 0.5rem;
     padding-bottom:20px;
 }
- .picket .header {
-    width: 100%;
+ #picketHeader {
+    grid-area: head3;
+    width: 2fr;
  }
 
 .item {
@@ -78,7 +78,7 @@
     position: absolute;
     min-width: 40px;
     max-width: 1fr;
-    margin: 5px;
+    margin-top: 15px;
     padding-left: 1.5rem;
   }
   .item.muuri-item-dragging {
