@@ -301,7 +301,7 @@ function computeResult() {
   console.log(result);
 
   let exp = nerdamer.simplify(result.replace(/ /, "")).text('scientific');;
-   exp = nerdamer(exp).toTeX('scientific');
+   exp = nerdamer(exp).toTeX('decimal');
   //Trying to figure out how to get it to display in scientific notation
   //And respect precision settings
 
