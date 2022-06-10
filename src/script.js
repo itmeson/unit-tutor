@@ -3,6 +3,7 @@ var MQ = MathQuill.getInterface(2);
 MQ.config({
   // this is to override the default of adding all the trig functions since I can't set to none
   autoOperatorNames: "sin", 
+  spaceBehavesLikeTab: true,
 });
 
 Decimal.set({precision:10}); // only using Decimnal.js in the flipQuantity function
