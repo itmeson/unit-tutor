@@ -1,12 +1,18 @@
+
 var MQ = MathQuill.getInterface(2);
 MQ.config({
   // this is to override the default of adding all the trig functions since I can't set to none
   autoOperatorNames: "sin", 
 });
 
-const calculator = document.querySelector(".calculator");
-Decimal.set({precision:5});
+Decimal.set({precision:10}); // only using Decimnal.js in the flipQuantity function
 
+nerdamer.set("SCIENTIFIC_MAX_DECIMAL_PLACES", 10);
+nerdamer.set("SCIENIFIC_IGNORE_ZERO_EXPONENTS", false)
+nerdamer.set("EXPRESSION_DECP", 10)
+
+
+const calculator = document.querySelector(".calculator");
 
 var gridA = new Muuri('.conversions', {
     dragEnabled: true,
@@ -255,7 +261,7 @@ function deleteQuantity(e) {
 
 }
 
-function flipQuantity(e) {
+function flipQuantity(e, MODE='decimal') {
   if (e.shiftKey) {
     const itemElem = e.target.closest(".item");
     let qty = nerdamer.convertFromLaTeX(MQ(itemElem.querySelector(".answer")).latex());
@@ -266,11 +272,19 @@ function flipQuantity(e) {
     console.log("3:", qty.toString());
     qty = qty.evaluate();
 
-    let numeric = new Decimal(qty.symbol.multiplier.num.value/qty.symbol.multiplier.den.value);
-    console.log("4:", numeric.toExponential(4));
-    qty.symbol.multiplier.num.value = numeric.toExponential(4);
-    qty.symbol.multiplier.den.value = 1;
-    MQ(itemElem.querySelector(".answer")).latex(qty.evaluate().toTeX('decimal'));
+    if (MODE === "decimal") {
+      let numeric = new Decimal(qty.symbol.multiplier.num.value/qty.symbol.multiplier.den.value);
+      console.log("4:", numeric.toExponential(4));
+      qty.symbol.multiplier.num.value = numeric.toExponential(4);
+      qty.symbol.multiplier.den.value = 1;
+      MQ(itemElem.querySelector(".answer")).latex(qty.evaluate().toTeX('decimal'));
+    }
+    else {
+      /*just swap numerator and denominator*/
+      MQ(itemElem.querySelector(".answer")).latex(qty.evaluate().toTeX());
+    }
+
+    window.dispatchEvent(new Event('resize')); // to force a layout fix
   }
 }
 
@@ -284,7 +298,19 @@ function computeResult() {
     result += `*(${nerdamer.convertFromLaTeX(MQ(item.querySelector(".answer")).latex())})`;
   })
   console.log(result);
-  let exp = nerdamer.simplify(result.replace(/ /, "")).toTeX('decimal');;
+
+  let exp = nerdamer.simplify(result.replace(/ /, "")).text('scientific');;
+   exp = nerdamer(exp).toTeX('scientific');
+  //Trying to figure out how to get it to display in scientific notation
+  //And respect precision settings
+
+  /*let exp = nerdamer.simplify(result.replace(/ /, ""));
+  let num = new Decimal(exp.symbol.multiplier.num.value);
+  let den = new Decimal(exp.symbol.multiplier.den.value);
+  exp.symbol.multiplier.num.value = num.toExponential(4);
+  exp.symbol.multiplier.den.value = den.toExponential(4);
+  exp = exp.toTeX('decimal');*/
+  
   addAResult(exp);
 
 }
