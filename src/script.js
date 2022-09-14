@@ -263,6 +263,7 @@ function deleteQuantity(e) {
 }
 
 function flipQuantity(e, MODE='decimal') {
+  console.log("fired flip")
   if (e.shiftKey) {
     const itemElem = e.target.closest(".item");
     let qty = nerdamer.convertFromLaTeX(MQ(itemElem.querySelector(".answer")).latex());
@@ -287,6 +288,7 @@ function flipQuantity(e, MODE='decimal') {
 
     window.dispatchEvent(new Event('resize')); // to force a layout fix
   }
+  else {console.log('missed the shift')}
 }
 
 /*find the product of each of the quantities in the picket*/
