@@ -109,6 +109,22 @@
         </template>
 
 
+        <div id="explanation">
+          <h4>explanation</h4>
+          <p> If you find an issue that does not work as you expect, please <a href="https://github.com/itmeson/unit-tutor/issues">submit a description of the issue</a></p>
+            <ul>
+              <li>Add conversion factors or quantities using the respective "+" buttons</li>
+              <li>Edit by clicking on the edit icon that appears when you hover over the right side of the card</li>
+              <li>Separate units using parentheses or multiplication symbols "*"</li>
+              <li>Editing is done with MathQuill -- works much like on Desmos graphing calculator</li>
+              <li>To "flip" a card (reciprocal), shift-click on the edit icon</li>
+              <li>Perform a calculation by moving cards to the calculate box then clicking the "+" button in that box.</li> 
+              <li>All cards in the calculate box will be multiplied together, with appropriate unit cancellation.</li>
+              <li>The result card will be in gray to indicate it is not editable</li>
+            </ul>
+
+        </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/web-animations-js@2.3.2/web-animations.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/haltu/muuri@0.9.5/dist/muuri.min.js"></script>     
@@ -127,6 +143,8 @@
           addAConversion("3600 \\frac{s}{hr}");
           addAQuantity("30 \\frac{m}{s}");
         </script>
+
+
 
     </body>
 
